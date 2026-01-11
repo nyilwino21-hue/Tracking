@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SF Shipping - Track Your Package</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* SF Shipping Logo Style - LOGO ဖြုတ်ထားသည် */
+        .logo-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0; /* Logo ဖြုတ်ပြီးနောက် gap လျှော့ချခြင်း */
+            margin-bottom: 15px;
+        }
+        
+        .company-name {
+            cursor: pointer;
+            position: relative;
+            font-family: 'Segoe UI', 'Inter', -apple-system, sans-serif;
+            text-align: center;
+        }
+        
+        /* Remove the hint text completely */
+        .logo-hint {
+            display: none !important;
+        }
+        
+        /* Company name hover effect */
+        .company-name h1 {
+            position: relative;
+            display: inline-block;
+            font-size: 3.5rem; /* ပိုကြီးအောင် */
+            font-weight: 800;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #e3f2ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* Subtle underline effect on hover */
+        .company-name::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 3px;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        
+        .company-name:hover::after {
+            width: 80%;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <!-- SF Shipping Text Only - LOGO ဖြုတ်ထားသည် -->
+                <div class="company-name" id="adminText">
+                    <h1>SF Shipping</h1>
+                </div>
+            </div>
+            <p class="tagline">Reliable Global Logistics Solutions</p>
+        </header>
+
+        <main>
+            <div class="tracking-section">
+                <h2><i class="fas fa-search-location"></i> Track Your Shipment</h2>
+                <div class="tracking-form">
+                    <div class="form-group">
+                        <label for="trackingNumber"><i class="fas fa-barcode"></i> Tracking Number</label>
+                        <input type="text" id="trackingNumber" placeholder="Enter SF tracking number (e.g., SF123456789)" maxlength="11">
+                        <small class="hint">Format: SF followed by 9 digits</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirmationCode"><i class="fas fa-shield-alt"></i> Confirmation Code</label>
+                        <input type="text" id="confirmationCode" placeholder="Enter 4-digit confirmation code" maxlength="4">
+                        <small class="hint">4 random letters/numbers provided when shipment was created</small>
+                    </div>
+                    
+                    <button id="trackButton" class="track-btn">
+                        <i class="fas fa-search"></i> Track Shipment
+                    </button>
+                </div>
+            </div>
+
+            <div class="result-section" id="resultSection" style="display: none;">
+                <h2><i class="fas fa-shipping-fast"></i> Shipment Details</h2>
+                <div class="shipment-info">
+                    <div class="info-card">
+                        <h3><i class="fas fa-info-circle"></i> Shipment Information</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Tracking Number:</span>
+                                <span class="value" id="displayTrackingNumber"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Status:</span>
+                                <span class="value status" id="displayStatus"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Origin:</span>
+                                <span class="value" id="displayOrigin"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Destination:</span>
+                                <span class="value" id="displayDestination"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Confirmation Code:</span>
+                                <span class="value" id="displayConfirmationCode"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-user"></i> Sender Details</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Name:</span>
+                                <span class="value" id="displaySenderName"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3><i class="fas fa-user-check"></i> Receiver Details</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <span class="label">Name:</span>
+                                <span class="value" id="displayReceiverName"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Address:</span>
+                                <span class="value" id="displayReceiverAddress"></span>
+                            </div>
+                            <div class="info-item">
+                                <span class="label">Phone:</span>
+                                <span class="value" id="displayReceiverPhone"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-card full-width">
+                        <h3><i class="fas fa-route"></i> Tracking History</h3>
+                        <div class="timeline" id="trackingTimeline"></div>
+                    </div>
+                </div>
+                
+                <button id="newSearchButton" class="new-search-btn">
+                    <i class="fas fa-redo"></i> Track Another Shipment
+                </button>
+            </div>
+
+            <div class="error-message" id="errorMessage" style="display: none;"></div>
+        </main>
+
+        <footer>
+            <p>© 2024 SF Shipping. All rights reserved.</p>
+            <p class="footer-note">For shipment booking, please contact our customer service.</p>
+        </footer>
+    </div>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-lock"></i> Admin Authentication</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="username"><i class="fas fa-user"></i> Username</label>
+                    <input type="text" id="username" placeholder="Enter username">
+                    <div class="error-field" id="usernameError"></div>
+                </div>
+                <div class="form-group">
+                    <label for="password"><i class="fas fa-key"></i> Password</label>
+                    <input type="password" id="password" placeholder="Enter password">
+                    <div class="error-field" id="passwordError"></div>
+                </div>
+                <button id="loginButton" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i> Login to Admin Panel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database-compat.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
