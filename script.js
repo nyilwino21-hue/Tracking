@@ -637,6 +637,7 @@ function setupAdminPage() {
             'Australia': '🇦🇺',
             'Canada': '🇨🇦',
             'USA': '🇺🇸',
+            'United Kingdom':'🇬🇧',
             'United States': '🇺🇸',
             'New Zealand': '🇳🇿',
             'Philippines': '🇵🇭',
